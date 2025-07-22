@@ -1,0 +1,90 @@
+create database american_analytics;
+
+use american_analytics;
+
+desc products;
+
+desc cart;
+
+CREATE TABLE IF NOT EXISTS tasks (
+	task_id VARCHAR(10) PRIMARY KEY,
+    task_name VARCHAR(255) NOT NULL,
+    chargable BOOLEAN NOT NULL,
+    rate_card INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS address (
+    address_id INT PRIMARY KEY AUTO_INCREMENT,
+	mail_id VARCHAR(50),
+	phone_number VARCHAR(13) NOT NULL,
+    house_no VARCHAR(50),
+    building_number VARCHAR(50), 
+    road_number VARCHAR(50), 
+    street_name VARCHAR(100), 
+    land_mark VARCHAR(100), 
+    city VARCHAR(50) NOT NULL, 
+    state VARCHAR(50) NOT NULL, 
+    zip_code CHAR(6) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS address (
+    address_id INT NOT NULL AUTO_INCREMENT,
+    house_no VARCHAR(50), 
+    building_number VARCHAR(50), 
+    road_number VARCHAR(50), 
+    street_name VARCHAR(100), 
+    land_mark VARCHAR(100), 
+    city VARCHAR(50) NOT NULL, 
+    state VARCHAR(50) NOT NULL, 
+    zip_code CHAR(6) NOT NULL, 
+    phone_number VARCHAR(13) NOT NULL,
+	mail_id VARCHAR(50) NOT NULL,
+    PRIMARY KEY (address_id)
+);
+
+CREATE TABLE IF NOT EXISTS employee (
+	emp_id VARCHAR(10) PRIMARY KEY,
+    employee_name VARCHAR(255) NOT NULL,
+    std_bill_rate INT NOT NULL,
+    address_id INT,
+    FOREIGN KEY (address_id) REFERENCES address(address_id) ON DELETE SET NULL
+    );
+	
+CREATE TABLE IF NOT EXISTS client (
+	client_id VARCHAR(10) PRIMARY KEY,
+    client_name VARCHAR(255) NOT NULL,
+    std_bill_rate INT NOT NULL,
+    client_description INT,
+	address_id INT,
+    FOREIGN KEY (address_id) REFERENCES address(address_id) ON DELETE SET NULL
+    );
+	
+CREATE TABLE IF NOT EXISTS time_sheet (
+	client_id VARCHAR(10) PRIMARY KEY,
+    client_name VARCHAR(255) NOT NULL,
+    std_bill_rate INT NOT NULL,
+    client_description INT,
+	address_id INT,
+    FOREIGN KEY (address_id) REFERENCES address(address_id) ON DELETE SET NULL
+    );
+
+alter table address change column mail_id mail_id VARCHAR(50) not null;
+
+
+CREATE TABLE IF NOT EXISTS products_order (order_id INT NOT NULL, order_product_name VARCHAR(255),order_product_quantity INT, order_product_price INT, order_product_total_cost FLOAT(10,2), order_date DATETIME);
+
+insert into products (product_name, product_price, product_warranty, product_quantity, product_description) values ('Laptop',40000,12,1,"Very good speed laptop for office purpose");
+
+insert into cart (cart_product_name, cart_product_price, cart_product_quantity, cart_product_warranty) values ('Laptop',40000,4,12);
+
+insert into products_order (order_id, order_product_name, order_product_quantity, order_product_price, order_product_total_cost) values (261232, 'Laptop', 10, 40000, 440000, 2024-04-21 19:34:18);
+
+select * from products;
+
+UPDATE cart set cart_product_quantity = 4 where cart_product_name = 'Laptop';
+
+select * from products where product_name = 'Laptop';
+
+delete from cart where cart_product_name = 'Laptop';
+
+TRUNCATE TABLE cart;
